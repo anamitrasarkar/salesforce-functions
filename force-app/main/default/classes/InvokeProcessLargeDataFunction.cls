@@ -9,6 +9,7 @@ public class InvokeProcessLargeDataFunction {
 
 
         string functionname = data[0];
+        System.debug('---> function  name : ' + functionname);
         string payload = '{"latitude": "36.169090", "longitude": "-115.140579", "length": 5}';
         // Instantiate the function
         functions.Function ldvFunction = functions.Function.get(functionName);

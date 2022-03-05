@@ -1,5 +1,7 @@
-"use strict";
-
+'use strict';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const sampleData = require("./data/sample-data.json");
 /**
  * Describe Processlargedataset here.
  *
@@ -13,7 +15,7 @@
  *                 to a given execution of a function.
  */
 
- const sampleData = require("./data/sample-data.json");
+
  
 export default async function (event, context, logger) {
   
