@@ -16,6 +16,7 @@
  const sampleData = require("./data/sample-data.json");
  
 export default async function (event, context, logger) {
+  
     logger.info(`Invoking Processlargedataset with payload ${JSON.stringify(event.data || {})}`);
 
     const data = event.data || {};
