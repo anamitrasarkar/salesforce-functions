@@ -3,5 +3,6 @@
     <classAccesses>
         <apexClass>InvokeProcessLargeDataFunction</apexClass>
         <enabled>true</enabled>
-    </classAccesses>    
+    </classAccesses> 
+    <label>Functions Recipes</label>       
 </PermissionSet>
