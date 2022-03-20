@@ -21,24 +21,29 @@ export default async function (event, context, logger) {
     let results = 'no data received'
     // Which toxicity labels to return.
     const labelsToInclude = ['identity_attack', 'insult', 'threat'];    
-    // toxicity.load(threshold, labelsToInclude)
-    //     .then(model => {
-    //         // Now you can use the `model` object to label sentences. 
-    //         model.classify(['i think you are stupid'])
-    //             .then(predictions => {
-    //                 results = JSON.stringify(predictions)
-    //                 logger.info(JSON.stringify(predictions))
-    //                 return JSON.stringify(results)            
-    //             })
-    //             .catch(error => {
-    //                 logger.info('error during classify' + error)
-    //             })
-    //     })    
-    //     .catch(error => {
-    //         logger.info('error during model load ' + error)
-    //     })
-    results = event.data.name
+    toxicity.load(threshold, labelsToInclude)
+        .then(model => {
+            // Now you can use the `model` object to label sentences. 
+            model.classify([event.data.message])
+                .then(predictions => {
+                    results = JSON.stringify(predictions)
+                    logger.info(JSON.stringify(predictions))
+                    if(results.length > 1) {
+                        return JSON.stringify(results) 
+                    }else {
+                        return JSON.stringify('no preictions reported')            
+                    }
+                    
+                })
+                .catch(error => {
+                    logger.info('error during classify' + error)
+                })
+        })    
+        .catch(error => {
+            logger.info('error during model load ' + error)
+        })
+    // results = event.data.message
     // const results = await context.org.dataApi.query('SELECT Id, Name FROM Account');
     // logger.info(JSON.stringify(results));
-    return results;
+    // return results;
 }
