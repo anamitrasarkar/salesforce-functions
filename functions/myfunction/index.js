@@ -17,16 +17,18 @@ export default async function (event, context, logger) {
     logger.info(`Invoking Myfunction with payload ${JSON.stringify(event.data || {})}`);
 
     // The minimum prediction confidence.
-    const threshold = 0.9;
+    const threshold = 0.3;
+    let results = 'no data received'
     // Which toxicity labels to return.
     const labelsToInclude = ['identity_attack', 'insult', 'threat'];    
     toxicity.load(threshold, labelsToInclude)
         .then(model => {
             // Now you can use the `model` object to label sentences. 
-            model.classify(['you suck'])
+            model.classify(['i think you are stupid'])
                 .then(predictions => {
+                    results = JSON.stringify(predictions)
                     logger.info(JSON.stringify(predictions))
-                    return JSON.stringify(predictions)            
+                    return JSON.stringify(results)            
                 })
                 .catch(error => {
                     logger.info('error during classify' + error)
