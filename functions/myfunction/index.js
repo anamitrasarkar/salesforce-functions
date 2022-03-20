@@ -34,11 +34,11 @@ export default async function (event, context, logger) {
             .then(response => response.json())
             .then(result => {
                 logger.info(JSON.stringify(result));
-                return result
+                return JSON.stringify(result)
             })
             .catch(error => {
                 console.log('error', error)
-                logger.Error(err)
+                logger.Error('---> error getting spoonacular data ' + err)
             });       
   
     } catch(err) {
