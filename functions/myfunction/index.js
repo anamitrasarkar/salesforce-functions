@@ -26,13 +26,20 @@ export default async function (event, context, logger) {
             // Now you can use the `model` object to label sentences. 
             model.classify([event.data.message])
                 .then(predictions => {
-                    results = JSON.stringify(predictions)
-                    logger.info(JSON.stringify(predictions))
+                    results = event.data.message
                     if(results.length > 1) {
-                        return JSON.stringify(results) 
+                        return results
                     }else {
                         return JSON.stringify('no preictions reported')            
                     }
+
+                    // results = JSON.stringify(predictions)
+                    // logger.info(JSON.stringify(predictions))
+                    // if(results.length > 1) {
+                    //     return JSON.stringify(results) 
+                    // }else {
+                    //     return JSON.stringify('no preictions reported')            
+                    // }
                     
                 })
                 .catch(error => {
