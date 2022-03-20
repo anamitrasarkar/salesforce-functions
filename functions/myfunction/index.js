@@ -1,5 +1,5 @@
 'use strict'
-import * as toxicity from '@tensorflow-models/toxicity';
+import toxicity from '@tensorflow-models/toxicity';
 /**
  * Describe Myfunction here.
  *
