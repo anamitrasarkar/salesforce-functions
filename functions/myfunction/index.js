@@ -31,7 +31,10 @@ export default async function (event, context, logger) {
         let URL = "https://api.spoonacular.com/food/products/search?query="+productName+"&apiKey="+API_KEY
         logger.info('url fetched ', URL)
           fetch(URL)
-            .then(response => response.json())
+            .then(response => {
+                response.json()
+                return (JSON.stringify(response.json()))
+            })
             .then(result => {
                 logger.info(JSON.stringify(result));
                 return JSON.stringify(result)
