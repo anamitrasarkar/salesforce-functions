@@ -1,5 +1,3 @@
-'use strict'
-import toxicity from '@tensorflow-models/toxicity';
 /**
  * Describe Myfunction here.
  *
@@ -12,45 +10,42 @@ import toxicity from '@tensorflow-models/toxicity';
  * @param logger: logging handler used to capture application logs and trace specifically
  *                 to a given execution of a function.
  */
+ import fetch from "node-fetch";
  
 export default async function (event, context, logger) {
-    logger.info(`Invoking Myfunction with payload ${JSON.stringify(event.data || {})}`);
 
-    // The minimum prediction confidence.
-    const threshold = 0.3;
-    let results = 'no data received'
-    // Which toxicity labels to return.
-    const labelsToInclude = ['identity_attack', 'insult', 'threat'];    
-    toxicity.load(threshold, labelsToInclude)
-        .then(model => {
-            // Now you can use the `model` object to label sentences. 
-            model.classify([event.data.message])
-                .then(predictions => {
-                    results = event.data.message
-                    if(results.length > 1) {
-                        return results
-                    }else {
-                        return JSON.stringify('no preictions reported')            
-                    }
-
-                    // results = JSON.stringify(predictions)
-                    // logger.info(JSON.stringify(predictions))
-                    // if(results.length > 1) {
-                    //     return JSON.stringify(results) 
-                    // }else {
-                    //     return JSON.stringify('no preictions reported')            
-                    // }
-                    
-                })
-                .catch(error => {
-                    logger.info('error during classify' + error)
-                })
-        })    
-        .catch(error => {
-            logger.info('error during model load ' + error)
-        })
-    // results = event.data.message
-    // const results = await context.org.dataApi.query('SELECT Id, Name FROM Account');
-    // logger.info(JSON.stringify(results));
-    // return results;
+    logger.info(
+        `Invoking inventorytracking Function with payload ${JSON.stringify(
+          event.data || {}
+        )}`
+      );
+     
+    // Extract Properties from Payload
+    const { productName } = event.data; 
+    // Validate the payload params
+    if (!productName) {
+        throw new Error(`Please provide a product name`);
+    }   
+    try{
+        const API_KEY = "9222b1ed26a7497fb80bc5c072a346ef"
+        let URL = "https://api.spoonacular.com/food/products/search?query="+productName+"&apiKey="+API_KEY
+        logger.info('url fetched ', URL)
+          fetch(URL)
+            .then(response => response.json())
+            .then(result => {
+                logger.info(JSON.stringify(result));
+                return result
+            })
+            .catch(error => {
+                console.log('error', error)
+                logger.Error(err)
+            });       
+  
+    } catch(err) {
+        // Catch any errors and pass the throw an error with the message
+        const errorMessage = `Failed to get results . Root Cause: ${err.message}`;
+        logger.error(errorMessage);
+        throw new Error(errorMessage);
+    }
+ 
 }
